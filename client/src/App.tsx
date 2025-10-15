@@ -1,0 +1,18 @@
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
+import ProductsCreate from './pages/ProductsCreate';
+import NotFound from './pages/NotFound';
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        {/* <Route path="/produtos/exibir" element={<ProductsList />} /> */}
+        <Route path="/produtos/cadastro" element={<ProductsCreate />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
+
+export default App;
