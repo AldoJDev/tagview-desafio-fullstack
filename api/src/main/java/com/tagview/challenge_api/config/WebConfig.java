@@ -14,7 +14,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        //usa o interceptor e aplica em todos os endpoints que começam com /api/v1/ (todos as rotas do projeto.)
+        //usa o interceptor e aplica em todos os endpoints que começam com /api/v1/ (todos as rotas do projeto)
         registry.addInterceptor(apiKeyInterceptor).addPathPatterns("/api/v1/**");
     }
 }

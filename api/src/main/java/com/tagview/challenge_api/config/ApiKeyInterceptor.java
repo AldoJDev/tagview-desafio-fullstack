@@ -11,6 +11,7 @@ public class ApiKeyInterceptor implements HandlerInterceptor {
 
 
     private static final String API_KEY_HEADER = "X-API-KEY";
+    //penso que seria 2025, mas optei por deixar exatamente como a descrição do projeto.
     private static final String API_KEY_VALUE = "tagview-desafio-2024";
 
     @Override

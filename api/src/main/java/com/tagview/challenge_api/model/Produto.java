@@ -36,11 +36,11 @@ public class Produto {
     @Column(name = "imagem", columnDefinition = "TEXT")
     private String imagem;
 
-    @CreationTimestamp // Marca o campo para ser preenchido com a data/hora de criação
+    @CreationTimestamp //preenchido automaticamente ao criar o dado
     @Column(name = "data_criacao", nullable = false, updatable = false)
     private LocalDateTime dataCriacao;
 
-    @UpdateTimestamp // Marca o campo para ser atualizado com a data/hora da última modificação
+    @UpdateTimestamp //atualizado automaticamente toda vez que o dado é modificado
     @Column(name = "data_modificacao", nullable = false)
     private LocalDateTime dataModificacao;
 }
