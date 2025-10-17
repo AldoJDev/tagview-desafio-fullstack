@@ -1,8 +1,10 @@
 package com.tagview.challenge_api.controller;
 
 
+import com.tagview.challenge_api.DTOs.ProdutoCreateDTO;
 import com.tagview.challenge_api.model.Produto;
 import com.tagview.challenge_api.repository.ProdutoRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,8 +42,15 @@ public class ProdutoController {
     }
 
     @PostMapping
-    public ResponseEntity<Produto> createProduct(@RequestBody Produto produto) {
+    public ResponseEntity<Produto> createProduct(@Valid @RequestBody ProdutoCreateDTO produtoDTO) {
         simularDelay();
+
+        Produto produto = new Produto();
+        produto.setNome(produtoDTO.getNome());
+        produto.setPreco(produtoDTO.getPreco());
+        produto.setDescricao(produtoDTO.getDescricao());
+        produto.setImagem(produtoDTO.getImagem());
+
         Produto savedProduct = produtoRepository.save(produto);
         return ResponseEntity.ok(savedProduct);
     }
