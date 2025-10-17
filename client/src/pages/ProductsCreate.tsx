@@ -1,14 +1,13 @@
 import { useState } from 'react'; 
 
 function ProductsCreate() {
-  //estados que guardam os valores dos campos do formulario
   const [nome, setNome] = useState('');
   const [preco, setPreco] = useState('');
   const [descricao, setDescricao] = useState('');
   const [imagem, setImagem] = useState<string | null>(null);
   const [errors, setErrors] = useState<string[]>([]);
 
-  //funçao que valida os campos antes do envio
+
   function validate(): string[] {
     const validationErrors: string[] = [];
 
@@ -49,19 +48,47 @@ function ProductsCreate() {
     reader.readAsDataURL(file);
     }
 
-  //função chamada quando o formulario é enviado
+  //função chamada quando o formulario e enviado
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault(); //impede o recarregamento da página
 
-    const validationErrors = validate(); //chama as validações
+    const validationErrors = validate(); 
     if (validationErrors.length > 0) {
-      //e tiver erros, atualiza o estado e não prossegue
-      setErrors(validationErrors);
-      return;
+        setErrors(validationErrors);
+        return;
     }
+     const produto = { nome, preco: Number(preco), descricao, imagem };
 
-    //API AQUI
+    try {
+      const response = await fetch('http://localhost:8080/api/v1/produtos', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-API-KEY': 'tagview-desafio-2024',
+        },
+        body: JSON.stringify(produto),
+      });
+
+      if (response.status === 422) {
+        const data = await response.json();
+        console.log(produto)
+        setErrors(data.erros || ['Erro de validação']);
+        return;
+      }
+
+      if (!response.ok) {
+        setErrors(['Erro ao cadastrar produto.']);
+        return;
+      }
+
+      alert('Novo Produto Cadastrado!');
+     
+    } catch (error) {
+      console.error(error);
+      setErrors(['Erro de conexão com o servidor']);
+    }
   }
+    
 
   return (
     <div style={{ padding: '20px', maxWidth: '600px', margin: '0 auto' }}>
@@ -82,7 +109,7 @@ function ProductsCreate() {
           <input 
             type="text" 
             value={nome} 
-            onChange={e => setNome(e.target.value)} // Atualiza o estado conforme o usuário digita
+            onChange={e => setNome(e.target.value)} //atualiza o estado conforme o usuário digita
             style={{ width: '100%', padding: '8px' }}
           />
         </div>
@@ -123,7 +150,6 @@ function ProductsCreate() {
             )}
         </div>
 
-        {/* MELHORAR CONDIÇÕES DO BOTÃO */}
         <button 
           type="submit" 
           style={{ 
@@ -142,5 +168,6 @@ function ProductsCreate() {
     </div>
   );
 }
+
 
 export default ProductsCreate;

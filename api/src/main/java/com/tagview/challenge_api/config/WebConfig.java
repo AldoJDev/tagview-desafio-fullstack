@@ -2,6 +2,7 @@ package com.tagview.challenge_api.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -17,4 +18,14 @@ public class WebConfig implements WebMvcConfigurer {
         //usa o interceptor e aplica em todos os endpoints que começam com /api/v1/ (todos as rotas do projeto)
         registry.addInterceptor(apiKeyInterceptor).addPathPatterns("/api/v1/**");
     }
+
+    //devido ao erro de cors
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/api/v1/**") //todas as rotas do projeto
+                .allowedOrigins("http://localhost:5173") //requisicoes do frontend
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") //metodos HTTP permitidos
+                .allowedHeaders("*"); //permite todos os cabeçalhos
+    }
+
 }

@@ -1,9 +1,12 @@
+// ApiKeyInterceptor.java
+
 package com.tagview.challenge_api.config;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.HandlerMapping; // Adicione se necessário
 
 //interceptor responsavel por validar a chave da API antes de processar as requisicoes
 @Component
@@ -16,6 +19,10 @@ public class ApiKeyInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        //devido ao um erro de cors, no frontend tive que adicionar essa linha ela deixa passar sem verificar a api key. Devo mudar isso.
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+            return true;
+        }
 
         //pega o valor da chave passada pelo cabeçalho da requisicao
         String apiKey = request.getHeader(API_KEY_HEADER);
