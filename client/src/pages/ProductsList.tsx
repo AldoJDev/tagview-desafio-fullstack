@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 
-// Definindo uma interface para o tipo Produto para usar com TypeScript
 interface Produto {
   id: string;
   nome: string;
@@ -58,173 +57,137 @@ function ProductsList() {
   const currentProducts = itemsPerPage === Infinity ? products : products.slice(indexOfFirstItem, indexOfLastItem);
   const totalPages = itemsPerPage === Infinity ? 1 : Math.ceil(products.length / itemsPerPage);
 
-
-  // --- RENDER ---
   if (loading) {
-    return <div style={{ textAlign: 'center', marginTop: '50px' }}>Carregando produtos...</div>;
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-xl text-gray-600">Carregando produtos...</div>
+      </div>
+    );
   }
 
   if (error) {
-    return <div style={{ textAlign: 'center', marginTop: '50px', color: 'red' }}>Erro: {error}</div>;
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-xl text-red-600">Erro: {error}</div>
+      </div>
+    );
   }
   
   return (
-    <div style={{ padding: '20px', maxWidth: '1200px', margin: '0 auto' }}>
-      <h1>Lista de Produtos</h1>
-      <a href="/produtos/cadastro">Cadastrar Novo Produto</a>
+    <div className="max-w-7xl mx-auto p-6">
+      {/* Cabeçalho */}
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-gray-800 mb-4">Lista de Produtos</h1>
+        <a 
+          href="/produtos/cadastro"
+          className="inline-block bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg transition"
+        >
+          Cadastrar Novo Produto
+        </a>
+      </div>
 
       {/* Controles de paginação */}
-      <div style={{ margin: '20px 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <div>
-          <span>Itens por página: </span>
-          <select value={itemsPerPage === Infinity ? 'all' : itemsPerPage} onChange={e => {
+      <div className="mb-6 flex items-center gap-3">
+        <span className="text-gray-700">Itens por página:</span>
+        <select 
+          value={itemsPerPage === Infinity ? 'all' : itemsPerPage}
+          onChange={e => {
             setItemsPerPage(e.target.value === 'all' ? Infinity : Number(e.target.value));
             setCurrentPage(1);
-          }}>
-            <option value={10}>10</option>
-            <option value={20}>20</option>
-            <option value={50}>50</option>
-            <option value="all">Todos</option>
-          </select>
-        </div>
+          }}
+          className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          <option value={10}>10</option>
+          <option value={20}>20</option>
+          <option value={50}>50</option>
+          <option value="all">Todos</option>
+        </select>
       </div>
       
       {/* Grid de Produtos */}
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {currentProducts.length > 0 ? (
           currentProducts.map(product => (
             <div 
               key={product.id} 
               onClick={() => setSelectedProduct(product)}
-              style={{
-                border: '1px solid #ddd',
-                borderRadius: '8px',
-                padding: '15px',
-                width: '220px',
-                textAlign: 'center',
-                cursor: 'pointer',
-                boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-                transition: 'transform 0.2s',
-              }}
+              className="border border-gray-200 rounded-lg p-4 cursor-pointer hover:shadow-lg transition transform hover:scale-105"
             >
               {product.imagem ? (
                 <img 
-                    src={product.imagem} 
-                    alt={product.nome} 
-                    style={{
-                        width: '100%',
-                        height: '150px',
-                        objectFit: 'cover',
-                        borderRadius: '4px',
-                    }} 
+                  src={product.imagem} 
+                  alt={product.nome} 
+                  className="w-full h-40 object-cover rounded-md mb-3"
                 />
               ) : (
-                <div style={{
-                    width: '100%',
-                    height: '150px',
-                    backgroundColor: '#f0f0f0',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: '#aaa',
-                    borderRadius: '4px',
-                }}>
-                    Sem Imagem
+                <div className="w-full h-40 bg-gray-100 flex items-center justify-center text-gray-400 rounded-md mb-3">
+                  Sem Imagem
                 </div>
               )}
-              <h3 style={{ margin: '10px 0' }}>{product.nome}</h3>
-              <p style={{ fontSize: '18px', fontWeight: 'bold' }}>
+              <h3 className="text-lg font-semibold text-gray-800 mb-2 line-clamp-2">{product.nome}</h3>
+              <p className="text-xl font-bold text-green-600">
                 {product.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
               </p>
             </div>
           ))
         ) : (
-          <p>Nenhum produto cadastrado.</p>
+          <p className="col-span-full text-center text-gray-500 py-10">Nenhum produto cadastrado.</p>
         )}
       </div>
 
-      <div style={{ marginTop: '30px', textAlign: 'center' }}>
-        {Array.from({ length: totalPages }, (_, i) => i + 1).map(pageNumber => (
-          <button 
-            key={pageNumber} 
-            onClick={() => setCurrentPage(pageNumber)}
-            style={{
-              margin: '0 5px',
-              padding: '8px 12px',
-              border: '1px solid #ddd',
-              cursor: 'pointer',
-              backgroundColor: currentPage === pageNumber ? '#4CAF50' : '#f0f0f0',
-              color: currentPage === pageNumber ? 'white' : 'black',
-            }}
-          >
-            {pageNumber}
-          </button>
-        ))}
-      </div>
+      {/* Paginação */}
+      {totalPages > 1 && (
+        <div className="mt-8 flex justify-center gap-2">
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map(pageNumber => (
+            <button 
+              key={pageNumber} 
+              onClick={() => setCurrentPage(pageNumber)}
+              className={`px-4 py-2 rounded-lg border transition ${
+                currentPage === pageNumber 
+                  ? 'bg-green-500 text-white border-green-500' 
+                  : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100'
+              }`}
+            >
+              {pageNumber}
+            </button>
+          ))}
+        </div>
+      )}
 
       {/* Modal */}
       {selectedProduct && (
         <div 
-            style={{
-                position: 'fixed',
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: '100%',
-                backgroundColor: 'rgba(0, 0, 0, 0.7)',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                zIndex: 1000,
-            }}
-            onClick={() => setSelectedProduct(null)}
+          className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 p-4"
+          onClick={() => setSelectedProduct(null)}
         >
           <div 
-            style={{
-                backgroundColor: 'white',
-                padding: '30px',
-                borderRadius: '8px',
-                width: '90%',
-                maxWidth: '500px',
-                position: 'relative',
-            }}
+            className="bg-white rounded-lg p-8 w-full max-w-2xl relative"
             onClick={e => e.stopPropagation()}
           >
             <button 
-                onClick={() => setSelectedProduct(null)}
-                style={{
-                    position: 'absolute',
-                    top: '10px',
-                    right: '10px',
-                    background: 'transparent',
-                    border: 'none',
-                    fontSize: '20px',
-                    cursor: 'pointer',
-                }}
+              onClick={() => setSelectedProduct(null)}
+              className="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-2xl font-bold"
             >
-                X
+              ×
             </button>
+            
             {selectedProduct.imagem ? (
-                <img src={selectedProduct.imagem} alt={selectedProduct.nome} style={{ maxWidth: '100%', borderRadius: '8px' }} />
-              ) : (
-                <div style={{
-                    width: '100%',
-                    height: '200px',
-                    backgroundColor: '#f0f0f0',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: '#aaa',
-                    borderRadius: '4px',
-                }}>
-                    Sem Imagem
-                </div>
-              )}
-            <h2>{selectedProduct.nome}</h2>
-            <p style={{ fontSize: '22px', fontWeight: 'bold', color: '#4CAF50' }}>
+              <img 
+                src={selectedProduct.imagem} 
+                alt={selectedProduct.nome} 
+                className="w-full max-h-96 object-contain rounded-lg mb-4"
+              />
+            ) : (
+              <div className="w-full h-64 bg-gray-100 flex items-center justify-center text-gray-400 rounded-lg mb-4">
+                Sem Imagem
+              </div>
+            )}
+            
+            <h2 className="text-2xl font-bold text-gray-800 mb-2">{selectedProduct.nome}</h2>
+            <p className="text-3xl font-bold text-green-600 mb-4">
               {selectedProduct.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
             </p>
-            <p style={{ marginTop: '15px', borderTop: '1px solid #eee', paddingTop: '15px' }}>
+            <p className="text-gray-700 border-t border-gray-200 pt-4">
               {selectedProduct.descricao}
             </p>
           </div>
