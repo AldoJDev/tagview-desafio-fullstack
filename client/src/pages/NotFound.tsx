@@ -15,10 +15,10 @@ function NotFound() {
         
         {/* Botão voltar */}
         <a 
-          href="/produtos/exibir"
+          href="/"
           className="inline-block bg-blue-500 hover:bg-blue-600 text-white font-semibold px-8 py-3 rounded-lg transition transform hover:scale-105"
         >
-          Ir para Produtos
+          Ir para a Home
         </a>
       </div>
     </div>
