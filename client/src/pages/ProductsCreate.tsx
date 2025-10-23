@@ -55,7 +55,7 @@ function ProductsCreate() {
     const produto = { nome, preco: Number(preco), descricao, imagem };
 
     try {
-      const response = await fetch('http://localhost:8080/api/v1/produtos', {
+      const response = await fetch('http://localhost:4000/api/v1/produtos', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

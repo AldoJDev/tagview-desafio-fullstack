@@ -20,7 +20,7 @@ function ProductsList() {
     async function fetchProducts() {
       try {
         setLoading(true);
-        const response = await fetch('http://localhost:8080/api/v1/produtos', {
+        const response = await fetch('http://localhost:4000/api/v1/produtos', {
           headers: {
             'X-API-KEY': 'tagview-desafio-2024',
           },
