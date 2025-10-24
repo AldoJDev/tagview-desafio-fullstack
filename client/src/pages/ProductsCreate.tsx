@@ -6,6 +6,7 @@ function ProductsCreate() {
   const [descricao, setDescricao] = useState('');
   const [imagem, setImagem] = useState<string | null>(null);
   const [errors, setErrors] = useState<string[]>([]);
+  const [loading, setLoading] = useState(false); 
 
   function validate(): string[] {
     const validationErrors: string[] = [];
@@ -27,10 +28,7 @@ function ProductsCreate() {
   }
 
   function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
-    let file;
-    if (e.target.files) {
-      file = e.target.files[0];
-    }
+    const file = e.target.files?.[0];
     if (!file) return;
 
     if (file.size > 5 * 1024 * 1024) {
@@ -45,10 +43,13 @@ function ProductsCreate() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    setErrors([]);
+    setLoading(true); 
 
     const validationErrors = validate(); 
     if (validationErrors.length > 0) {
       setErrors(validationErrors);
+      setLoading(false);
       return;
     }
     
@@ -66,28 +67,28 @@ function ProductsCreate() {
 
       if (response.status === 422) {
         const data = await response.json();
-        console.log(produto);
         setErrors(data.erros || ['Erro de validação']);
+        setLoading(false);
         return;
       }
 
       if (!response.ok) {
         setErrors(['Erro ao cadastrar produto.']);
+        setLoading(false);
         return;
       }
 
-      //pega oid do produto retornado pela API
       const data = await response.json();
       const novoProdutoId = data.id;
 
       alert('Novo Produto Cadastrado!');
-      
-      //redireciona para a página de listagem com o id do novo produto
       window.location.href = `/produtos/exibir?idProduto=${novoProdutoId}`;
      
     } catch (error) {
       console.error(error);
       setErrors(['Erro de conexão com o servidor']);
+    } finally {
+      setLoading(false); 
     }
   }
 
@@ -123,7 +124,8 @@ function ProductsCreate() {
             type="text" 
             value={nome} 
             onChange={e => setNome(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+            disabled={loading}
+            className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500 disabled:bg-gray-100"
             placeholder="Digite o nome do produto"
           />
         </div>
@@ -137,7 +139,8 @@ function ProductsCreate() {
             type="number" 
             value={preco} 
             onChange={e => setPreco(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+            disabled={loading}
+            className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500 disabled:bg-gray-100"
             placeholder="0.00"
             step="0.01"
           />
@@ -152,7 +155,8 @@ function ProductsCreate() {
             value={descricao} 
             onChange={e => setDescricao(e.target.value)}
             rows={5}
-            className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+            disabled={loading}
+            className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500 disabled:bg-gray-100"
             placeholder="Descreva o produto..."
           />
         </div>
@@ -166,7 +170,8 @@ function ProductsCreate() {
             type="file" 
             accept="image/*" 
             onChange={handleImageChange}
-            className="block w-full text-sm text-gray-600 border border-gray-300 rounded p-2"
+            disabled={loading}
+            className="block w-full text-sm text-gray-600 border border-gray-300 rounded p-2 disabled:bg-gray-100"
           />
           {imagem && (
             <img 
@@ -177,12 +182,20 @@ function ProductsCreate() {
           )}
         </div>
 
-        {/* Botão Submit */}
+        {/* Botão Submit, com o loading adicionado. */}
         <button 
           type="submit" 
-          className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-3 rounded transition"
+          disabled={loading}
+          className={`w-full flex items-center justify-center gap-2 font-semibold py-3 rounded transition ${
+            loading
+              ? 'bg-gray-400 text-white cursor-not-allowed'
+              : 'bg-green-500 hover:bg-green-600 text-white'
+          }`}
         >
-          Cadastrar Produto
+          {loading && (
+            <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+          )}
+          {loading ? 'Cadastrando...' : 'Cadastrar Produto'}
         </button>
       </form>
     </div>
