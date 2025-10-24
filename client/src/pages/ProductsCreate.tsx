@@ -76,7 +76,14 @@ function ProductsCreate() {
         return;
       }
 
+      //pega oid do produto retornado pela API
+      const data = await response.json();
+      const novoProdutoId = data.id;
+
       alert('Novo Produto Cadastrado!');
+      
+      //redireciona para a página de listagem com o id do novo produto
+      window.location.href = `/produtos/exibir?idProduto=${novoProdutoId}`;
      
     } catch (error) {
       console.error(error);
@@ -90,10 +97,10 @@ function ProductsCreate() {
       <div className="mb-6">
         <h1 className="text-3xl font-bold text-gray-800 mb-4">Criar Produto</h1>
         <a 
-          href="/"
+          href="/produtos/exibir"
           className="text-blue-500 hover:underline"
         >
-          ← Ir para Home
+          ← Ir para Lista de Produtos
         </a>
       </div>
 
