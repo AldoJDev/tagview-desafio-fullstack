@@ -47,20 +47,30 @@ public class ProdutoController {
     @PostMapping
     public ResponseEntity<?> createProduct(@Valid @RequestBody ProdutoCreateDTO produtoDTO) {
         simularDelay();
-
         //para fazer as validacoes.
         List<String> erros = new ArrayList<>();
 
         if (produtoDTO.getNome() == null || produtoDTO.getNome().isBlank()) {
-            erros.add("O nome do produto é obrigatório.");
+            erros.add("Nome do produto é obrigatório");
+        } else if (produtoDTO.getNome().length() < 3) {
+            erros.add("Nome precisa ter no mínimo 3 caracteres");
+        } else if (produtoDTO.getNome().length() > 50) {
+            erros.add("Nome precisa ter no máximo 50 caracteres");
         }
 
-        if (produtoDTO.getPreco() == null || produtoDTO.getPreco().compareTo(new BigDecimal("10")) < 0) {
-            erros.add("O preço deve ser maior que zero.");
+
+        if (produtoDTO.getPreco() == null) {
+            erros.add("Preço é obrigatório");
+        } else if (produtoDTO.getPreco().compareTo(new BigDecimal("10")) < 0) {
+            erros.add("Preço precisa ser maior ou igual a 10");
         }
 
         if (produtoDTO.getDescricao() == null || produtoDTO.getDescricao().isBlank()) {
-            erros.add("A descrição é obrigatória.");
+            erros.add("Descrição é obrigatória");
+        } else if (produtoDTO.getDescricao().length() < 30) {
+            erros.add("Descrição precisa ter no mínimo 30 caracteres");
+        } else if (produtoDTO.getDescricao().length() > 255) {
+            erros.add("Descrição precisa ter no máximo 255 caracteres");
         }
 
         if (produtoDTO.getImagem() != null && !produtoDTO.getImagem().isBlank()) {
