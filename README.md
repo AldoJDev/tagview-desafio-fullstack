@@ -23,10 +23,9 @@ O projeto consiste em uma aplicação web para gerenciamento de produtos, compos
 - ✅ **Seleção de Limite:** Opções para exibir 10, 20, 50 ou Todos os produtos por página
 - ✅ **Modal de Detalhes:** Clique no card para visualizar detalhes completos (imagem, nome, preço e descrição)
 - ✅ **Query Param `idProduto`:** Abertura automática do modal ao acessar com `?idProduto=UUID`
-- ✅ **Fallback de Imagem:** Placeholder visual para produtos sem imagem cadastrada
 - ✅ **Loading State:** Indicador visual durante carregamento dos dados
 - ✅ **Tratamento de Erros:** Mensagens amigáveis em caso de falha na API
-- ✅ **Design Responsivo:** Interface adaptável para desktop, tablet e mobile
+
 
 #### Cadastro de Produtos (`/produtos/cadastro`)
 - ✅ **Formulário Completo:** Campos para nome, preço, descrição e imagem
@@ -38,8 +37,7 @@ O projeto consiste em uma aplicação web para gerenciamento de produtos, compos
 - ✅ **Preview de Imagem:** Visualização da imagem antes do envio
 - ✅ **Feedback de Erros:** Exibição clara de erros de validação (frontend e backend)
 - ✅ **Redirecionamento Inteligente:** Após sucesso, redireciona para listagem com modal aberto no produto recém-cadastrado
-- ✅ **Mensagem de Sucesso:** Alert informando "Novo Produto Cadastrado!"
-- ✅ **Upload de Imagem:** Conversão automática para Base64
+- ✅ **Upload de Imagem:** Conversão para Base64
 ---
 
 ### ⚙️ Backend
@@ -60,8 +58,7 @@ O projeto consiste em uma aplicação web para gerenciamento de produtos, compos
   - Nome: 3-50 caracteres, obrigatório
   - Preço: mínimo R$ 10,00, obrigatório
   - Descrição: 30-255 caracteres, obrigatório
-  - Imagem: máximo 2MB (backend), Base64, PNG/JPG, opcional
-  - Validação de formato: Magic numbers para PNG e JPEG
+  - Imagem: máximo 2MB (backend), Base64, opcional
 - **Responses:**
   - `200`: Produto criado com sucesso (retorna objeto completo com UUID)
   - `422`: Erro de validação (retorna array de erros)
@@ -74,26 +71,17 @@ O projeto consiste em uma aplicação web para gerenciamento de produtos, compos
 
 #### Recursos do Backend
 - ✅ **Spring Boot 3.5.6:** Framework robusto e moderno
-- ✅ **Java 21:** Versão LTS mais recente
+- ✅ **Java 21:** Versão que tenho mais familiariedade
 - ✅ **PostgreSQL:** Banco de dados relacional
 - ✅ **Spring Data JPA:** Persistência simplificada
 - ✅ **Bean Validation:** Validações declarativas
-- ✅ **Lombok:** Redução de boilerplate
+- ✅ **Lombok:** Redução de repetição de codigo
 - ✅ **SpringDoc OpenAPI:** Documentação automática (Swagger)
 - ✅ **CORS Configurado:** Permite acesso do frontend
 - ✅ **Timestamps Automáticos:** `criadoEm` e `atualizadoEm` em cada produto
 - ✅ **UUID como ID:** Identificadores únicos universais
 - ✅ **Tratamento de Exceções:** Respostas padronizadas para erros
 - ✅ **Validação de Imagem Base64:** Decodificação e verificação de tamanho/formato
-- ✅ **Magic Numbers Validation:** Verifica se imagem é realmente PNG ou JPEG
-
-#### Documentação Swagger
-- ✅ **Interface Interativa:** Teste todos os endpoints pelo navegador
-- ✅ **Autenticação Configurada:** Suporte para X-API-KEY
-- ✅ **Exemplos Completos:** Request e response bodies documentados
-- ✅ **Schemas Detalhados:** Descrição de todos os campos e validações
-- ✅ **Códigos de Status:** Documentação de todos os cenários possíveis
-- ✅ **Try It Out:** Execute requisições diretamente no Swagger UI
 
 ---
 
@@ -116,18 +104,18 @@ O projeto consiste em uma aplicação web para gerenciamento de produtos, compos
 ## 🛠️ Stack de Tecnologias
 
 ### Backend
-- **Java 21** - Linguagem de programação (LTS)
+- **Java 21** - Linguagem de programação 
 - **Spring Boot 3.5.6** - Framework principal
 - **Spring Data JPA** - Persistência de dados
 - **Spring Validation** - Validação de dados
 - **SpringDoc OpenAPI 2.5.0** - Documentação Swagger
-- **Lombok** - Redução de boilerplate
+- **Lombok** - Redução de repetição de código
 - **PostgreSQL Driver** - Conexão com banco de dados
 - **Maven** - Gerenciamento de dependências
 
 ### Frontend
 - **React 18** - Biblioteca UI
-- **TypeScript** - Superset tipado do JavaScript
+- **TypeScript** - uma versão do JavaScript que ajuda a evitar erros ao programar
 - **Tailwind CSS** - Framework de estilização
 - **Vite** - Build tool e dev server
 
@@ -170,14 +158,11 @@ Este comando irá:
 - Aguardar a inicialização completa de todos os serviços
 
 **4. Aguarde a Inicialização**
-A primeira execução pode levar alguns minutos para:
-- Baixar as imagens base
-- Instalar dependências
-- Inicializar o banco de dados
+A primeira execução pode levar alguns minutos.
 
 **5. Acesse a Aplicação:**
 
-Após a conclusão, os serviços estarão disponíveis:
+Após a conclusão, os serviços estarão disponíveis (use as rotas corretas):
 
 -   🌐 **Frontend:** `http://localhost:3000`
 -   ⚙️ **API:** `http://localhost:4000`
@@ -228,11 +213,7 @@ curl -X POST "http://localhost:4000/api/v1/produtos" \
 
 ### Testando com Swagger
 
-1. Acesse `http://localhost:4000/swagger-ui.html`
-2. Clique no botão **"Authorize"** (cadeado verde)
-3. Digite `tagview-desafio-2024` no campo Value
-4. Clique em **"Authorize"** e depois **"Close"**
-5. Teste os endpoints diretamente pela interface
+apos a inicialização, acesse: `http://localhost:4000/swagger-ui.html`
 
 ---
 
@@ -263,15 +244,15 @@ curl -X POST "http://localhost:4000/api/v1/produtos" \
 4. **Teste da API via Swagger:**
    - Acesse `http://localhost:4000/swagger-ui.html`
    - Autentique com `tagview-desafio-2024`
-   - Teste todos os endpoints
+   - Teste os endpoints
 
 
 ## 👨‍💻 Autor
 
 **Aldo Junio Souza Brandão**
 
-- 📧 Email: [aldojunio.dev@gmail.com]
-- 💼 LinkedIn: [https://linkedin.com/in/seu-perfil](https://linkedin.com/in/seu-perfil)
+- 📧 Email: aldojunio.dev@gmail.com
+- 💼 LinkedIn: https://www.linkedin.com/in/aldo-brandão-a4185a37a/
 - 🐙 GitHub: [https://github.com/AldoJDev](https://github.com/AldoJDev)
 
 ---
@@ -284,6 +265,6 @@ Este projeto foi desenvolvido como parte de um desafio técnico para a Tagview.
 
 ## 🙏 Agradecimentos
 
-Agradeço à equipe da **Tagview** pela oportunidade de participar deste desafio técnico. Foi uma experiência que me permitiu demonstrar habilidades em desenvolvimento full-stack, trabalho com APIs RESTful, containerização e boas práticas de desenvolvimento de software.
+Agradeço à equipe da **Tagview** pela oportunidade de participar deste desafio técnico. Foi uma experiência que me permitiu aprender e demonstrar habilidades em desenvolvimento full-stack.
 
 ---
